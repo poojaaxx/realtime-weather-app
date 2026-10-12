@@ -1,0 +1,4 @@
+﻿import { Box, Stack, Typography, Button, Chip } from '@mui/material';
+export default function SearchHistory({ history, onSearch, onClear }) {
+ return <Box component="section" aria-label="Search history" sx={{ mt: 3 }}><Stack direction="row" justifyContent="space-between" alignItems="center"><Typography variant="subtitle2" color="text.secondary">RECENT SEARCHES</Typography>{history.length > 0 && <Button size="small" onClick={onClear}>Clear history</Button>}</Stack>{history.length ? <Stack direction="row" useFlexGap flexWrap="wrap" spacing={1} sx={{ mt: 1 }}>{history.map(city => <Chip key={city} label={city} onClick={() => onSearch(city)} aria-label={`Search again for ${city}`}/>)}</Stack> : <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>Your successful city searches will appear here.</Typography>}</Box>;
+}
