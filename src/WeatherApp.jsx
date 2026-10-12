@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { Container, Stack, Typography, Chip, Paper } from '@mui/material';
-import WbSunny from '@mui/icons-material/WbSunny';
+import { Container, Stack, Typography, Paper, Alert, CircularProgress } from '@mui/material';
 import SearchBox from './components/SearchBox';
-export default function WeatherApp() { const [city, setCity] = useState(''); return <Container maxWidth="lg" sx={{ py: { xs: 4, md: 7 } }}><Stack direction="row" spacing={2} alignItems="center"><WbSunny color="primary"/><Typography variant="h5">Realtime Weather</Typography><Chip label="LIVE WEATHER" size="small"/></Stack><Typography variant="h3" sx={{ mt: 6 }}>A little clarity for your day.</Typography><Typography color="text.secondary" sx={{ mt: 2 }}>Current conditions and the days ahead, all in one place.</Typography><Paper sx={{ p: { xs: 2, md: 4 }, mt: 4 }}><SearchBox onSearch={setCity}/><Typography sx={{ mt: 2 }}>{city ? `Ready to search ${city}` : 'Search your city to get started.'}</Typography></Paper></Container>; }
+import { getWeatherInfo } from './services/weather';
+export default function WeatherApp() {
+ const [state, setState] = useState({ status: 'empty' });
+ async function search(city) { setState({ status: 'loading' }); try { const weather = await getWeatherInfo(city); setState({ status: 'success', weather }); } catch (error) { setState({ status: 'error', error: error.message }); } }
+ return <Container maxWidth="lg" sx={{ py: 5 }}><Typography variant="h3">Realtime Weather</Typography><Paper sx={{ p: 3, mt: 4 }}><SearchBox onSearch={search} loading={state.status === 'loading'}/><Stack sx={{ mt: 3 }} role="status">{state.status === 'loading' && <CircularProgress aria-label="Loading weather"/>}{state.status === 'error' && <Alert severity="error">{state.error}</Alert>}{state.status === 'empty' && <Typography>Search a city to see current conditions.</Typography>}{state.status === 'success' && <Typography>{state.weather.city}: {Math.round(state.weather.temperature)} °C · {state.weather.description}</Typography>}</Stack></Paper></Container>;
+}
