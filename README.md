@@ -76,4 +76,4 @@ Deploy `dist/` to a static host. Supply the environment variable in the build en
 
 Geolocation needs HTTPS or localhost and browser permission. API keys may take time to activate; quotas and plan restrictions can produce 401, 403 or 429 messages. This app fetches on load and on user action; it does not continuously refresh. Weather icons load from OpenWeather; the text remains useful if images fail. Tested in Chromium; other browser engines have not been verified. Modern browsers supporting AbortSignal timeout/combination are required.
 
-No commits have been pushed. Commit authors use the user-confirmed GitHub identity, with no assistant or coauthor attribution.
+Commit authors use the user-confirmed GitHub identity, with no assistant or coauthor attribution.
