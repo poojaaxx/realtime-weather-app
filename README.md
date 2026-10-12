@@ -2,6 +2,10 @@
 
 A React + Vite + Material UI weather dashboard using the OpenWeatherMap REST API.
 
+**Public website:** [Realtime Weather](https://realtime-weather-app-indol.vercel.app)
+
+Hosted on Vercel Hobby (free plan).
+
 ## Setup
 
 Use Node.js 22.12+ (Node 24 recommended) and npm. From this folder:
@@ -74,9 +78,9 @@ npm run preview
 
 `vercel.json` explicitly configures the Vite framework, `npm ci`, `npm run build`, `dist/`, and an SPA fallback for direct navigation and refresh. `.vercelignore` excludes local environment files, credentials, generated output and local test artifacts from uploads. `.vercel/` is ignored because it contains machine-specific account/project linkage.
 
-Use a personal Vercel account on the free Hobby plan. Authenticate with `npx vercel login`, link this folder to the project with `npx vercel link`, then configure `VITE_OPENWEATHER_API_KEY` in the project's **Settings > Environment Variables** for **Production**. Enter the provider-authorized key there, never in chat or a command argument. The Vercel CLI's `vercel env add VITE_OPENWEATHER_API_KEY production` input flow is another option. Environment settings reduce accidental disclosure in configuration, but the built Vite frontend still exposes this key to visitors.
+Use a personal Vercel account on the free Hobby plan. Authenticate with `npx vercel login`, link this folder to the project with `npx vercel link`, then configure `VITE_OPENWEATHER_API_KEY` in the project's **Settings > Environment Variables** for **Production**. Enter the provider-authorized key there, never in chat or a command argument. The Vercel CLI's `vercel env add VITE_OPENWEATHER_API_KEY production --type config` input flow is another option. Environment settings reduce accidental disclosure in configuration, but the built Vite frontend still exposes this key to visitors.
 
-Deploy with `npx vercel --prod` from the linked workspace. A changed key requires a new deployment because Vite substitutes it at build time. A CLI deployment does not by itself configure automatic deployments from GitHub. No paid add-ons, custom domains or paid services are required.
+Deploy with `npx vercel --prod` from the linked workspace. A changed key requires a new deployment because Vite substitutes it at build time. This project is linked to `poojaaxx/realtime-weather-app` on GitHub; pushes to `main` trigger production deployments. The environment variable is configured for Production; configure Preview separately if branch previews should fetch weather. No paid add-ons, custom domains or paid services are required.
 
 Deploy `dist/` to a static host. Supply the environment variable in the build environment, then rebuild when it changes. `.env`, `.env.*`, `*.local`, generated output, dependencies and test artifacts are ignored; `.env.example` is deliberately tracked with only a placeholder.
 
@@ -85,3 +89,16 @@ Deploy `dist/` to a static host. Supply the environment variable in the build en
 Geolocation needs HTTPS or localhost and browser permission. API keys may take time to activate; quotas and plan restrictions can produce 401, 403 or 429 messages. This app fetches on load and on user action; it does not continuously refresh. Weather icons load from OpenWeather; the text remains useful if images fail. Tested in Chromium; other browser engines have not been verified. Modern browsers supporting AbortSignal timeout/combination are required.
 
 Commit authors use the user-confirmed GitHub identity, with no assistant or coauthor attribution.
+
+## Public deployment verification
+
+Verified on 12 October 2026 against the public HTTPS URL, without bypassing authentication or mocking weather endpoints:
+
+- Desktop (1440 x 1000) and mobile (390 x 844) load current conditions and five forecast cards with no horizontal overflow or browser runtime errors. Screenshots were visually reviewed.
+- London city search returns live current weather and forecast.
+- Refreshing the page restores the application and retains recent search history.
+- An invalid city produces a helpful City not found message.
+- Browser geolocation with granted permission and supplied Chennai test coordinates fetches live current weather and forecast. This tests the permission/API integration, not the accuracy of a physical device's positioning hardware. Denied permission, unsupported browsers and timeouts are covered by the local tests.
+- All observed OpenWeather API requests use HTTPS.
+
+The provider-authorized API key remains browser-visible by design, was not rotated because the user is not authorized to replace it, and is excluded from Git and source uploads. It was transferred from local configuration to Vercel environment settings through stdin without printing the value. No purchases, paid services or paid trials were enabled.
