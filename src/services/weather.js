@@ -21,3 +21,8 @@ export async function getWeatherInfo(city, signal) {
  return getWeatherByCoordinates(locations[0].lat, locations[0].lon, signal);
 }
 export async function getWeatherByCoordinates(lat, lon, signal) { return normalizeWeather(await request('/data/2.5/weather', { lat, lon }, signal)); }
+export async function getForecast(lat, lon, signal) {
+ const data = await request('/data/2.5/forecast', { lat, lon }, signal);
+ if (!Array.isArray(data.list) || !Number.isFinite(data.city?.timezone) || !data.list.every(item => Number.isFinite(item.dt) && Number.isFinite(item.main?.temp_min) && Number.isFinite(item.main?.temp_max) && item.weather?.[0]?.description)) throw new WeatherError('The forecast service returned incomplete data.', 'response');
+ return { list: data.list, timezone: data.city.timezone };
+}
