@@ -1,10 +1,107 @@
-import WbSunny from '@mui/icons-material/WbSunny';
-import AcUnit from '@mui/icons-material/AcUnit';
-import Thunderstorm from '@mui/icons-material/Thunderstorm';
-import { Card, CardContent, CardMedia, Stack, Typography, Box } from '@mui/material';
-export const temperatureText = (value, unit = 'C') => `${Math.round(unit === 'F' ? value * 9 / 5 + 32 : value)}\u00b0${unit}`;
-export default function InfoBox({ weather, unit = 'C' }) {
- const color = weather.temperature > 30 ? '#ff9d91' : weather.temperature < 10 ? '#90caff' : 'text.primary';
- const frost = weather.temperature <= 0; const Icon = frost || weather.condition === 'Snow' ? AcUnit : weather.condition === 'Thunderstorm' ? Thunderstorm : WbSunny;
- return <Card sx={{ mt: 3, background: frost ? 'linear-gradient(130deg, #29475f, #152b43)' : 'linear-gradient(130deg, #16444a, #12243a)' }}><CardContent sx={{ p: { xs: 3, md: 4 } }}><Stack direction="row" justifyContent="space-between" alignItems="center"><Box><Stack direction="row" spacing={1} alignItems="center"><Icon color="primary"/><Typography variant="overline" color="primary">{frost ? 'FROST CONDITIONS' : 'CURRENT CONDITIONS'}</Typography></Stack><Typography variant="h4" component="h2">{weather.city}{weather.country && `, ${weather.country}`}</Typography><Typography sx={{ textTransform: 'capitalize', mt: 1 }} color="text.secondary">{weather.description}</Typography></Box>{/^[0-9]{2}[dn]$/.test(weather.icon) && <CardMedia component="img" image={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`} alt={weather.description} sx={{ width: 90, height: 90 }}/>}</Stack><Typography sx={{ fontSize: { xs: 68, md: 88 }, fontWeight: 700, color, my: 2 }}>{temperatureText(weather.temperature, unit)}</Typography><Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3 }}>{[['Feels like', temperatureText(weather.feelsLike, unit)], ['Humidity', `${weather.humidity}%`], ['Wind', `${weather.windSpeed} m/s`], ['Current min / max', `${temperatureText(weather.min, unit)} / ${temperatureText(weather.max, unit)}`]].map(([label, value]) => <Box key={label}><Typography variant="body2" color="text.secondary">{label}</Typography><Typography variant="h6">{value}</Typography></Box>)}</Box></CardContent></Card>;
+import WbSunny from "@mui/icons-material/WbSunny";
+import AcUnit from "@mui/icons-material/AcUnit";
+import Thunderstorm from "@mui/icons-material/Thunderstorm";
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Stack,
+  Typography,
+  Box,
+} from "@mui/material";
+export const temperatureText = (value, unit = "C") =>
+  `${Math.round(unit === "F" ? (value * 9) / 5 + 32 : value)}\u00b0${unit}`;
+export default function InfoBox({ weather, unit = "C" }) {
+  const color =
+    weather.temperature > 30
+      ? "#ff9d91"
+      : weather.temperature < 10
+        ? "#90caff"
+        : "text.primary";
+  const frost = weather.temperature <= 0;
+  const Icon =
+    frost || weather.condition === "Snow"
+      ? AcUnit
+      : weather.condition === "Thunderstorm"
+        ? Thunderstorm
+        : WbSunny;
+  return (
+    <Card
+      sx={{
+        mt: 3,
+        background: frost
+          ? "linear-gradient(130deg, #29475f, #152b43)"
+          : "linear-gradient(130deg, #16444a, #12243a)",
+      }}
+    >
+      <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+        <Stack
+          direction="row"
+          sx={{ justifyContent: "space-between", alignItems: "center" }}
+        >
+          <Box sx={{ minWidth: 0 }}>
+            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+              <Icon color="primary" />
+              <Typography variant="overline" color="primary">
+                {frost ? "FROST CONDITIONS" : "CURRENT CONDITIONS"}
+              </Typography>
+            </Stack>
+            <Typography
+              variant="h4"
+              component="h2"
+              sx={{ overflowWrap: "anywhere", fontSize: { xs: 28, md: 34 } }}
+            >
+              {weather.city}
+              {weather.country && `, ${weather.country}`}
+            </Typography>
+            <Typography
+              sx={{ textTransform: "capitalize", mt: 1 }}
+              color="text.secondary"
+            >
+              {weather.description}
+            </Typography>
+          </Box>
+          {/^[0-9]{2}[dn]$/.test(weather.icon) && (
+            <CardMedia
+              component="img"
+              image={`https://openweathermap.org/img/wn/${weather.icon}@2x.png`}
+              alt={weather.description}
+              sx={{ width: 90, height: 90 }}
+            />
+          )}
+        </Stack>
+        <Typography
+          sx={{ fontSize: { xs: 68, md: 88 }, fontWeight: 700, color, my: 2 }}
+        >
+          {temperatureText(weather.temperature, unit)}
+        </Typography>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "repeat(2, 1fr)", md: "repeat(4, 1fr)" },
+            gap: 3,
+          }}
+        >
+          {[
+            ["Feels like", temperatureText(weather.feelsLike, unit)],
+            ["Humidity", `${weather.humidity}%`],
+            ["Wind", `${weather.windSpeed} m/s`],
+            [
+              "Current min / max",
+              `${temperatureText(weather.min, unit)} / ${temperatureText(weather.max, unit)}`,
+            ],
+          ].map(([label, value]) => (
+            <Box key={label}>
+              <Typography variant="body2" color="text.secondary">
+                {label}
+              </Typography>
+              <Typography variant="h6" sx={{ fontSize: { xs: 16, md: 20 } }}>
+                {value}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </CardContent>
+    </Card>
+  );
 }

@@ -9,3 +9,9 @@ test-results/
 playwright-report/
 tmp/
 *.log
+*.pem
+*.key
+*.p12
+*.pfx
+.npmrc
+.netrc

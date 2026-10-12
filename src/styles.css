@@ -1,3 +1,13 @@
-body { min-width: 320px; background: radial-gradient(ellipse at top right, #16434c 0, transparent 55%), #0a1829; }
-button, input { font: inherit; }
-::selection { background: #80ded1; color: #0a1829; }
+body {
+  min-width: 320px;
+  background:
+    radial-gradient(ellipse at top right, #16434c 0, transparent 55%), #0a1829;
+}
+button,
+input {
+  font: inherit;
+}
+::selection {
+  background: #80ded1;
+  color: #0a1829;
+}
