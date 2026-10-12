@@ -70,6 +70,14 @@ npm run build
 npm run preview
 ```
 
+### Vercel Hobby deployment
+
+`vercel.json` explicitly configures the Vite framework, `npm ci`, `npm run build`, `dist/`, and an SPA fallback for direct navigation and refresh. `.vercelignore` excludes local environment files, credentials, generated output and local test artifacts from uploads. `.vercel/` is ignored because it contains machine-specific account/project linkage.
+
+Use a personal Vercel account on the free Hobby plan. Authenticate with `npx vercel login`, link this folder to the project with `npx vercel link`, then configure `VITE_OPENWEATHER_API_KEY` in the project's **Settings > Environment Variables** for **Production**. Enter the provider-authorized key there, never in chat or a command argument. The Vercel CLI's `vercel env add VITE_OPENWEATHER_API_KEY production` input flow is another option. Environment settings reduce accidental disclosure in configuration, but the built Vite frontend still exposes this key to visitors.
+
+Deploy with `npx vercel --prod` from the linked workspace. A changed key requires a new deployment because Vite substitutes it at build time. A CLI deployment does not by itself configure automatic deployments from GitHub. No paid add-ons, custom domains or paid services are required.
+
 Deploy `dist/` to a static host. Supply the environment variable in the build environment, then rebuild when it changes. `.env`, `.env.*`, `*.local`, generated output, dependencies and test artifacts are ignored; `.env.example` is deliberately tracked with only a placeholder.
 
 **Vite environment variables are visible in the browser bundle and network requests.** This avoids committing the key but does not keep it private in a deployed frontend. For a public production app needing a private credential, put OpenWeather requests behind a server-side proxy with appropriate rate limits. Do not commit `dist/`, which can contain the configured key.
